@@ -1,6 +1,6 @@
-# pr1
+# Pr1
 
-Pr1.
+RGB color picker.
 
 ## Getting Started
 
