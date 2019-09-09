@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'layouts/portrait_layout.dart';
-import 'layouts/landscape_layout.dart';
+
+import 'package:pr1/layouts/landscape_layout.dart';
+import 'package:pr1/layouts/portrait_layout.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,9 +24,9 @@ class MyApp extends StatelessWidget {
             return orientation == Orientation.portrait
               ? PortraitLayout()
               : LandscapeLayout();
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
   }
 }

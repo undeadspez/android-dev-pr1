@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../screen_utils.dart';
-import '../custom_track_shape.dart';
+import 'package:pr1/custom_track_shape.dart';
+import 'package:pr1/screen_utils.dart';
 
 class LandscapeLayout extends StatefulWidget {
   LandscapeLayout({Key key}) : super(key: key);
@@ -42,8 +42,8 @@ class _LandscapeLayoutState extends State<LandscapeLayout> with ScreenUtils {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         _buildColorPanel(),
-        _buildSliderPanel()
-      ]
+        _buildSliderPanel(),
+      ],
     );
   }
 
@@ -58,10 +58,10 @@ class _LandscapeLayoutState extends State<LandscapeLayout> with ScreenUtils {
             style: Theme.of(context)
                 .textTheme
                 .display2
-                .apply(color: textColor)
-          )
-        )
-      )
+                .apply(color: textColor),
+          ),
+        ),
+      ),
     );
   }
 
@@ -74,9 +74,9 @@ class _LandscapeLayoutState extends State<LandscapeLayout> with ScreenUtils {
         children: <Widget>[
           _buildSliderRow(get: () => _r, set: (x) => _r = x, activeColor: Colors.red),
           _buildSliderRow(get: () => _g, set: (x) => _g = x, activeColor: Colors.green),
-          _buildSliderRow(get: () => _b, set: (x) => _b = x, activeColor: Colors.blue)
-        ]
-      )
+          _buildSliderRow(get: () => _b, set: (x) => _b = x, activeColor: Colors.blue),
+        ],
+      ),
     );
   }
 
@@ -90,8 +90,8 @@ class _LandscapeLayoutState extends State<LandscapeLayout> with ScreenUtils {
         max: 255.0,
         value: get().toDouble(),
         onChanged: (double x) => setState(() => set(x.toInt())),
-        activeColor: activeColor
-      )
+        activeColor: activeColor,
+      ),
     );
   }
 
@@ -104,13 +104,13 @@ class _LandscapeLayoutState extends State<LandscapeLayout> with ScreenUtils {
           width: 35,
           margin: EdgeInsets.only(right: 15),
           child: Text(get().toString(),
-            style: TextStyle(fontSize: 20)
-          )
+            style: TextStyle(fontSize: 20),
+          ),
         ),
         Expanded(
-          child: _buildSlider(get: get, set: set, activeColor: activeColor)
-        )
-      ]
+          child: _buildSlider(get: get, set: set, activeColor: activeColor),
+        ),
+      ],
     );
   }
 }
