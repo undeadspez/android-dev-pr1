@@ -67,7 +67,7 @@ class _PortraitLayoutState extends State<PortraitLayout> with ScreenUtils {
 
   Widget _buildSliderPanel() {
     return Container(
-      height: effectiveScreenHeight(context, dividedBy: 3),
+      height: screenHeight(context, dividedBy: 3),
       padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

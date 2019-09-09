@@ -5,20 +5,12 @@ mixin ScreenUtils {
     return MediaQuery.of(context).size;
   }
 
-  double screenWidth(BuildContext context, {double dividedBy = 1, double reducedBy = 0.0}) {
-    return (screenSize(context).width - reducedBy) / dividedBy;
+  double screenWidth(BuildContext context, {double dividedBy = 1}) {
+    return screenSize(context).width / dividedBy;
   }
 
-  double screenHeight(BuildContext context, {double dividedBy = 1, double reducedBy = 0.0}) {
+  double screenHeight(BuildContext context, {double dividedBy = 1}) {
+    final reducedBy = kToolbarHeight + kBottomNavigationBarHeight;
     return (screenSize(context).height - reducedBy) / dividedBy;
-  }
-
-  double effectiveScreenWidth(BuildContext context, {double dividedBy = 1}) {
-    return screenWidth(context, dividedBy: dividedBy);
-  }
-
-  double effectiveScreenHeight(BuildContext context, {double dividedBy = 1}) {
-    var reducedBy = kToolbarHeight + kBottomNavigationBarHeight;
-    return screenHeight(context, dividedBy: dividedBy, reducedBy: reducedBy);
   }
 }

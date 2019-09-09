@@ -16,13 +16,8 @@ class _LandscapeLayoutState extends State<LandscapeLayout> with ScreenUtils {
   int _g = 85;
   int _b = 172;
 
-  get r => _r;
   set r(int val) => setState(() => _r = val);
-
-  get g => _g;
   set g(int val) => setState(() => _g = val);
-
-  get b => _b;
   set b(int val) => setState(() => _b = val);
 
   Color get color {
@@ -67,7 +62,7 @@ class _LandscapeLayoutState extends State<LandscapeLayout> with ScreenUtils {
 
   Widget _buildSliderPanel() {
     return Container(
-      width: effectiveScreenWidth(context, dividedBy: 3),
+      width: screenWidth(context, dividedBy: 3),
       padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
