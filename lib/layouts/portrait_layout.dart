@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:pr1/custom_track_shape.dart';
 import 'package:pr1/screen_utils.dart';
+import 'package:pr1/text_utils.dart';
 
 class PortraitLayout extends StatefulWidget {
   PortraitLayout({Key key}) : super(key: key);
@@ -10,28 +11,25 @@ class PortraitLayout extends StatefulWidget {
   _PortraitLayoutState createState() => _PortraitLayoutState();
 }
 
-class _PortraitLayoutState extends State<PortraitLayout> with ScreenUtils {
+class _PortraitLayoutState
+    extends State<PortraitLayout>
+    with ScreenUtils, TextUtils {
   int _a = 255;
   int _r = 67;
   int _g = 85;
   int _b = 172;
 
-  get r => _r;
   set r(int val) => setState(() => _r = val);
-
-  get g => _g;
   set g(int val) => setState(() => _g = val);
-
-  get b => _b;
   set b(int val) => setState(() => _b = val);
 
-  Color get color {
+  Color get resultColor {
     return Color.fromARGB(_a, _r, _g, _b);
   }
 
   String get hexColor {
     padHex(int x) => x.toRadixString(16).padLeft(2, '0');
-    return "#${padHex(_r)}${padHex(_g)}${padHex(_b)}";
+    return '#' + padHex(_r) + padHex(_g) + padHex(_b);
   }
 
   @override
@@ -48,17 +46,15 @@ class _PortraitLayoutState extends State<PortraitLayout> with ScreenUtils {
   }
 
   Widget _buildColorPanel() {
-    final textColor = color.computeLuminance() >= 0.5 ? Colors.black : Colors.white;
-
     return Expanded(
       child: Container(
-        color: color,
+        color: resultColor,
         child: Center(
           child: Text(hexColor,
             style: Theme.of(context)
                 .textTheme
                 .display2
-                .apply(color: textColor),
+                .apply(color: computeTextColor(resultColor)),
           ),
         ),
       ),
@@ -68,19 +64,35 @@ class _PortraitLayoutState extends State<PortraitLayout> with ScreenUtils {
   Widget _buildSliderPanel() {
     return Container(
       height: screenHeight(context, dividedBy: 3),
-      padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+      padding: EdgeInsets.all(15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _buildSliderRow(get: () => _r, set: (x) => _r = x, activeColor: Colors.red),
-          _buildSliderRow(get: () => _g, set: (x) => _g = x, activeColor: Colors.green),
-          _buildSliderRow(get: () => _b, set: (x) => _b = x, activeColor: Colors.blue),
+          _buildSliderRow(
+              get: () => _r,
+              set: (x) => _r = x,
+              activeColor: Colors.red
+          ),
+          _buildSliderRow(
+              get: () => _g,
+              set: (x) => _g = x,
+              activeColor: Colors.green
+          ),
+          _buildSliderRow(
+              get: () => _b,
+              set: (x) => _b = x,
+              activeColor: Colors.blue
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildSlider({int Function() get, Function(int) set, Color activeColor}) {
+  Widget _buildSlider({
+    int Function() get,
+    Function(int) set,
+    Color activeColor
+  }) {
     return SliderTheme(
       data: SliderThemeData(
         trackShape: CustomTrackShape(),
@@ -95,7 +107,11 @@ class _PortraitLayoutState extends State<PortraitLayout> with ScreenUtils {
     );
   }
 
-  Widget _buildSliderRow({int Function() get, Function(int) set, Color activeColor}) {
+  Widget _buildSliderRow({
+    int Function() get,
+    Function(int) set,
+    Color activeColor
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[

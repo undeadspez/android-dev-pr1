@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
         body: OrientationBuilder(
           builder: (BuildContext context, Orientation orientation) {
             return orientation == Orientation.portrait
-              ? PortraitLayout()
-              : LandscapeLayout();
+                ? PortraitLayout()
+                : LandscapeLayout();
           },
         ),
       ),
