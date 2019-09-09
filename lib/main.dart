@@ -18,23 +18,15 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text(title)
         ),
-        body: HomePage()
+        body: OrientationBuilder(
+          builder: (BuildContext context, Orientation orientation) {
+            return orientation == Orientation.portrait
+              ? PortraitLayout()
+              : LandscapeLayout();
+          }
+        )
       )
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  HomePage({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (BuildContext context, Orientation orientation) {
-        return orientation == Orientation.portrait
-          ? PortraitLayout()
-          : LandscapeLayout();
-      }
-    );
-  }
-}
