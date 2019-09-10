@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:pr1/color_bloc.dart';
 import 'package:pr1/custom_slider.dart';
-import 'package:pr1/screen_utils.dart';
-import 'package:pr1/text_utils.dart';
+import 'package:pr1/utils/screen_utils.dart';
+import 'package:pr1/utils/text_utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LandscapeLayout extends StatefulWidget {
