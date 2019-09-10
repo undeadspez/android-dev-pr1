@@ -1,35 +1,26 @@
 import 'package:flutter/material.dart';
 
-import 'package:pr1/custom_track_shape.dart';
+import 'package:pr1/color_bloc.dart';
+import 'package:pr1/custom_slider.dart';
 import 'package:pr1/screen_utils.dart';
 import 'package:pr1/text_utils.dart';
+import 'package:rxdart/rxdart.dart';
 
 class LandscapeLayout extends StatefulWidget {
-  LandscapeLayout({Key key}) : super(key: key);
+  final ColorBloc colorBloc;
+
+  LandscapeLayout(this.colorBloc, {Key key}) : super(key: key);
 
   @override
   _LandscapeLayoutState createState() => _LandscapeLayoutState();
 }
 
-class _LandscapeLayoutState
-    extends State<LandscapeLayout>
+class _LandscapeLayoutState extends State<LandscapeLayout>
     with ScreenUtils, TextUtils {
-  int _a = 255;
-  int _r = 67;
-  int _g = 85;
-  int _b = 172;
 
-  set r(int val) => setState(() => _r = val);
-  set g(int val) => setState(() => _g = val);
-  set b(int val) => setState(() => _b = val);
-
-  Color get resultColor {
-    return Color.fromARGB(_a, _r, _g, _b);
-  }
-
-  String get hexColor {
+  String getHexColor(Color color) {
     padHex(int x) => x.toRadixString(16).padLeft(2, '0');
-    return '#' + padHex(_r) + padHex(_g) + padHex(_b);
+    return '#' + padHex(color.red) + padHex(color.green) + padHex(color.blue);
   }
 
   @override
@@ -47,16 +38,24 @@ class _LandscapeLayoutState
 
   Widget _buildColorPanel() {
     return Expanded(
-      child: Container(
-        color: resultColor,
-        child: Center(
-          child: Text(hexColor,
-            style: Theme.of(context)
-                .textTheme
-                .display2
-                .apply(color: computeTextColor(resultColor)),
-          ),
-        ),
+      child: StreamBuilder<Color>(
+        initialData: widget.colorBloc.color.value,
+        stream: widget.colorBloc.color,
+        builder: (context, snapshot) {
+          return Container(
+            color: snapshot.data,
+            child: Center(
+              child: Text(
+                getHexColor(snapshot.data),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .display2
+                    .apply(color: computeTextColor(snapshot.data)),
+              ),
+            )
+          );
+        }
       ),
     );
   }
@@ -69,64 +68,58 @@ class _LandscapeLayoutState
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSliderRow(
-              get: () => _r,
-              set: (x) => _r = x,
-              activeColor: Colors.red
+            colorComponent: widget.colorBloc.r,
+            updateFunc: widget.colorBloc.updateRedComponent,
+            activeColor: Colors.red,
           ),
           _buildSliderRow(
-              get: () => _g,
-              set: (x) => _g = x,
-              activeColor: Colors.green
+            colorComponent: widget.colorBloc.g,
+            updateFunc: widget.colorBloc.updateGreenComponent,
+            activeColor: Colors.green,
           ),
           _buildSliderRow(
-              get: () => _b,
-              set: (x) => _b = x,
-              activeColor: Colors.blue
+            colorComponent: widget.colorBloc.b,
+            updateFunc: widget.colorBloc.updateBlueComponent,
+            activeColor: Colors.blue,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSlider({
-    int Function() get,
-    Function(int) set,
-    Color activeColor
-  }) {
-    return SliderTheme(
-      data: SliderThemeData(
-        trackShape: CustomTrackShape(),
-      ),
-      child: Slider(
-        min: 0.0,
-        max: 255.0,
-        value: get().toDouble(),
-        onChanged: (double x) => setState(() => set(x.toInt())),
-        activeColor: activeColor,
-      ),
-    );
-  }
-
   Widget _buildSliderRow({
-    int Function() get,
-    Function(int) set,
-    Color activeColor
+    @required ValueObservable<int> colorComponent,
+    @required Function(int) updateFunc,
+    @required Color activeColor,
   }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          alignment: Alignment.centerLeft,
-          width: 35,
-          margin: EdgeInsets.only(right: 15),
-          child: Text(get().toString(),
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-        Expanded(
-          child: _buildSlider(get: get, set: set, activeColor: activeColor),
-        ),
-      ],
+    return StreamBuilder<int>(
+      initialData: colorComponent.value,
+      stream: colorComponent,
+      builder: (context, snapshot) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerLeft,
+              width: 35,
+              margin: EdgeInsets.only(right: 15),
+              child: Text(
+                snapshot.data.toString(),
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            Expanded(
+              child: CustomSlider(
+                min: 0.0,
+                max: 255.0,
+                value: snapshot.data.toDouble(),
+                onChanged: (double x) => updateFunc(x.toInt()),
+                activeColor: activeColor,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
